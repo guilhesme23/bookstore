@@ -1,4 +1,8 @@
-package tech.gmarques.bookstore_api.book;
+package tech.gmarques.bookstore_api.book.dto;
+
+import tech.gmarques.bookstore_api.book.Book;
+import tech.gmarques.bookstore_api.book.Language;
+import tech.gmarques.bookstore_api.book.Ratings;
 
 import java.util.List;
 

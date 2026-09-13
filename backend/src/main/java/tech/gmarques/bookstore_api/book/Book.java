@@ -10,9 +10,11 @@ import org.hibernate.type.SqlTypes;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
+import tech.gmarques.bookstore_api.book.dto.CreateBookDTO;
+import tech.gmarques.bookstore_api.book.dto.UpdateBookDTO;
+import tech.gmarques.bookstore_api.util.ModelUtils;
 
 import java.beans.PropertyDescriptor;
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -59,15 +61,7 @@ public class Book {
     }
 
     public void update(UpdateBookDTO data) {
-        BeanUtils.copyProperties(data, this, getNullProperties(data));
-    }
-
-    private String[] getNullProperties(Object source) {
-        BeanWrapper wrap = new BeanWrapperImpl(source);
-
-        return Arrays.stream(wrap.getPropertyDescriptors())
-                .map(PropertyDescriptor::getName)
-                .filter(name -> wrap.getPropertyValue(name) == null)
-                .toArray(String[]::new);
+        String[] nullProperties = ModelUtils.getNullProperties(data);
+        BeanUtils.copyProperties(data, this, nullProperties);
     }
 }

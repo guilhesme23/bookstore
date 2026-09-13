@@ -8,6 +8,10 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import tech.gmarques.bookstore_api.book.*;
+import tech.gmarques.bookstore_api.book.dto.BookDetailsDTO;
+import tech.gmarques.bookstore_api.book.dto.BookSummaryDTO;
+import tech.gmarques.bookstore_api.book.dto.CreateBookDTO;
+import tech.gmarques.bookstore_api.book.dto.UpdateBookDTO;
 
 import java.util.List;
 
