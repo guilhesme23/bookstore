@@ -7,11 +7,17 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.BeanWrapper;
+import org.springframework.beans.BeanWrapperImpl;
 
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-@Entity
+@Entity(name = "Book")
 @Table(name = "books")
 @NoArgsConstructor
 @Getter
@@ -37,6 +43,8 @@ public class Book {
     @Embedded
     private Language language;
 
+    private Boolean active;
+
     public Book(@Valid CreateBookDTO data) {
         this.author = data.author();
         this.title = data.title();
@@ -48,5 +56,18 @@ public class Book {
         this.isbn = data.isbn();
         this.publisher = data.publisher();
         this.language = data.language();
+    }
+
+    public void update(UpdateBookDTO data) {
+        BeanUtils.copyProperties(data, this, getNullProperties(data));
+    }
+
+    private String[] getNullProperties(Object source) {
+        BeanWrapper wrap = new BeanWrapperImpl(source);
+
+        return Arrays.stream(wrap.getPropertyDescriptors())
+                .map(PropertyDescriptor::getName)
+                .filter(name -> wrap.getPropertyValue(name) == null)
+                .toArray(String[]::new);
     }
 }
