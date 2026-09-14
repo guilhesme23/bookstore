@@ -1,5 +1,6 @@
 package tech.gmarques.bookstore_api.book.dto;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -15,7 +16,8 @@ public record CreateBookDTO(
         String description,
 
         @NotNull(message = "Autor não deve ser nulo")
-        String author,
+        @JsonAlias("author_id")
+        Long authorId,
 
         List<String> genres,
 

@@ -14,7 +14,7 @@ public record BookSummaryDTO(
                 book.getId(),
                 book.getTitle(),
                 book.getDescription(),
-                book.getAuthor(),
+                book.getAuthor().getName(),
                 book.getRating().value()
         );
     }

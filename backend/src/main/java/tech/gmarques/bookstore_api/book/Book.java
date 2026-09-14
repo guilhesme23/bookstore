@@ -8,15 +8,12 @@ import lombok.Setter;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
 import org.springframework.beans.BeanUtils;
-import org.springframework.beans.BeanWrapper;
-import org.springframework.beans.BeanWrapperImpl;
+import tech.gmarques.bookstore_api.author.Author;
 import tech.gmarques.bookstore_api.book.dto.CreateBookDTO;
 import tech.gmarques.bookstore_api.book.dto.UpdateBookDTO;
 import tech.gmarques.bookstore_api.util.ModelUtils;
 
-import java.beans.PropertyDescriptor;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @Entity(name = "Book")
@@ -31,7 +28,10 @@ public class Book {
 
     private String title;
     private String description;
-    private String author;
+
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private Author author;
 
     @Embedded
     private Ratings rating;
@@ -47,8 +47,8 @@ public class Book {
 
     private Boolean active;
 
-    public Book(@Valid CreateBookDTO data) {
-        this.author = data.author();
+    public Book(@Valid CreateBookDTO data, Author author) {
+        this.author = author;
         this.title = data.title();
         this.description = data.description();
         this.rating = new Ratings(5d, 0, 0);
@@ -60,8 +60,12 @@ public class Book {
         this.language = data.language();
     }
 
-    public void update(UpdateBookDTO data) {
+    public void update(UpdateBookDTO data, Author author) {
         String[] nullProperties = ModelUtils.getNullProperties(data);
         BeanUtils.copyProperties(data, this, nullProperties);
+
+        if (author != null) {
+            this.author = author;
+        }
     }
 }

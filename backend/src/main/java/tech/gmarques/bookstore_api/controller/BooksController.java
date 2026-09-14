@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
+import tech.gmarques.bookstore_api.author.Author;
+import tech.gmarques.bookstore_api.author.AuthorRepository;
 import tech.gmarques.bookstore_api.book.*;
 import tech.gmarques.bookstore_api.book.dto.BookDetailsDTO;
 import tech.gmarques.bookstore_api.book.dto.BookSummaryDTO;
@@ -22,9 +24,11 @@ public class BooksController {
     private final Logger log = LoggerFactory.getLogger(BooksController.class);
 
     private final BookRepository repository;
+    private final AuthorRepository authorRepository;
 
-    public BooksController(BookRepository repository) {
+    public BooksController(BookRepository repository, AuthorRepository authorRepository) {
         this.repository = repository;
+        this.authorRepository = authorRepository;
     }
 
     @PostMapping
@@ -34,7 +38,8 @@ public class BooksController {
             UriComponentsBuilder uriBuilder
     ) {
         log.info("Create new book");
-        var book = new Book(data);
+        var author = authorRepository.getReferenceById(data.authorId());
+        var book = new Book(data, author);
         repository.save(book);
 
         var uriLocation = uriBuilder.path("/books/{id}")
@@ -75,7 +80,11 @@ public class BooksController {
             return ResponseEntity.notFound().build();
         }
 
-        book.get().update(data);
+        Author author = null;
+        if (data.authorId() != null) {
+            author = authorRepository.getReferenceById(data.authorId());
+        }
+        book.get().update(data, author);
         return ResponseEntity.ok(new BookDetailsDTO(book.get()));
     }
 }
