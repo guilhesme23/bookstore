@@ -27,7 +27,7 @@ public class Author {
     private String bio;
     private Boolean active;
 
-    @OneToMany(mappedBy = "author")
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY)
     private List<Book> books;
 
     public Author(@Valid CreateAuthorDTO data) {

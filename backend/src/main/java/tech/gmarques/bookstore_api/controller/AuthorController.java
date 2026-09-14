@@ -40,4 +40,11 @@ public class AuthorController {
                 .toList();
         return ResponseEntity.ok(authors);
     }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AuthorDetailsDTO> getAuthor(@PathVariable Long id) {
+        return repository.findById(id)
+                .map(a -> ResponseEntity.ok(new AuthorDetailsDTO(a)))
+                .orElse(ResponseEntity.notFound().build());
+    }
 }
