@@ -1,5 +1,6 @@
 package tech.gmarques.bookstore_api.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +15,7 @@ import tech.gmarques.bookstore_api.author.dto.CreateAuthorDTO;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Tag(name = "Authors", description = "Operações relacionadas à autores")
 @RestController
 @RequestMapping("/authors")
 public class AuthorController {

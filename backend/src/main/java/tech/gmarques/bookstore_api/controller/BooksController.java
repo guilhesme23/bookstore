@@ -1,5 +1,7 @@
 package tech.gmarques.bookstore_api.controller;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,6 +19,7 @@ import tech.gmarques.bookstore_api.book.dto.UpdateBookDTO;
 
 import java.util.List;
 
+@Tag(name = "Books", description = "Operações relacionadas à livros")
 @RestController
 @RequestMapping("/books")
 public class BooksController {
